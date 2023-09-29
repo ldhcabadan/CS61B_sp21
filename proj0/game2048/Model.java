@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @ldhcabadan TODO: YOUR NAME HERE
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -107,17 +107,128 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
+        boolean changed = false;
+
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        /*for(int i = 0; i < this.board.size(); i++) {
+            //对一列内部进行遍历
+            for(int j = this.board.size() - 1; j >= 0; j--) {
+                int flag = 0;
+                //不动空白区域
+                if(this.board.tile(i, j) == null) {
+                    continue;
+                } else {
+                    flag = 0; //flag代表是否有可以结合的数字
+                    int row = 0;
+                    //从上向下依次遍历，以寻找是否存在可结合的数字，并记录列号。
+                    for(int k = j - 1; k >= 0; k--) {
+                        if (this.board.tile(i, k) == null) {
+                            continue;
+                        } else if(this.board.tile(i, j).value() != this.board.tile(i, k).value()) {
+                            continue;
+                        } else {
+                            flag = 1;
+                            row = k;
+                            break;
+                        }
+                    }
+                    Tile t = board.tile(i, row);
+                    //假如存在可消除的一组，则将两者结合。
+                    if(flag == 1) {
+                        this.board.move(i, j, t);
+                        changed = true;
+                        this.score = this.score + t.value() * 2;
+                    }
+
+                    Tile t2 = board.tile(i, j);
+                    //将数字移至最上方的空白处
+                    int l = 0;
+                    for(l = j; l < this.board.size() - 1; l++) {
+                        if(this.board.tile(i, l + 1) != null) {
+                            break;
+                        }
+                    }
+                    this.board.move(i, l, t2);
+                    if(l != j) {
+                        changed = true;
+                    }
+
+                }
+            }
+        }*/
+        changed = moveUpOnly(side);
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
+        return changed;
+    }
+
+    /**
+     *
+     */
+    public boolean moveUpOnly(Side side) {
+        if(side == Side.WEST) {
+            this.board.setViewingPerspective(Side.WEST);
+        } else if (side == Side.EAST) {
+            this.board.setViewingPerspective(Side.EAST);
+        } else if (side == Side.NORTH) {
+            this.board.setViewingPerspective(Side.NORTH);
+        } else {
+            this.board.setViewingPerspective(Side.SOUTH);
+        }
+        boolean changed = false;
+        for(int i = 0; i < this.board.size(); i++) {
+            //对一列内部进行遍历
+            for(int j = this.board.size() - 1; j >= 0; j--) {
+                int flag = 0;
+                //不动空白区域
+                if(this.board.tile(i, j) == null) {
+                    continue;
+                } else {
+                    flag = 0; //flag代表是否有可以结合的数字
+                    int row = 0;
+                    //从上向下依次遍历，以寻找是否存在可结合的数字，并记录列号。
+                    for(int k = j - 1; k >= 0; k--) {
+                        if (this.board.tile(i, k) == null) {
+                            continue;
+                        } else if(this.board.tile(i, j).value() != this.board.tile(i, k).value()) {
+                            continue;
+                        } else {
+                            flag = 1;
+                            row = k;
+                            break;
+                        }
+                    }
+                    Tile t = board.tile(i, row);
+                    //假如存在可消除的一组，则将两者结合。
+                    if(flag == 1) {
+                        this.board.move(i, j, t);
+                        changed = true;
+                        this.score = this.score + t.value() * 2;
+                    }
+
+                    Tile t2 = board.tile(i, j);
+                    //将数字移至最上方的空白处
+                    int l = 0;
+                    for(l = j; l < this.board.size() - 1; l++) {
+                        if(this.board.tile(i, l + 1) != null) {
+                            break;
+                        }
+                    }
+                    this.board.move(i, l, t2);
+                    if(l != j) {
+                        changed = true;
+                    }
+
+                }
+            }
+        }
+        this.board.setViewingPerspective(Side.NORTH);
         return changed;
     }
 
@@ -137,7 +248,13 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++) {
+            for(int j = 0; j < b.size(); j++) {
+                if(b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +264,15 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++) {
+            for(int j = 0; j < b.size(); j++) {
+                if(b.tile(i, j) == null) {
+                    continue;
+                } else if(b.tile(i, j).value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +284,24 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if(emptySpaceExists(b)) {
+            return true;
+        } else {
+            for(int i = 0; i < b.size() - 1; i++){
+                for(int j = 0; j < b.size(); j++){
+                    if(b.tile(i, j).value() == b.tile(i + 1, j).value()){
+                        return true;
+                    }
+                }
+            }
+            for(int i = 0; i < b.size(); i++){
+                for(int j = 0; j < b.size() - 1; j++){
+                    if(b.tile(i, j).value() == b.tile(i, j + 1).value()){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 

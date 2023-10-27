@@ -1,6 +1,5 @@
 package deque;
 
-import afu.org.checkerframework.checker.igj.qual.I;
 
 public class ArrayDeque<Item> {
     private Item[] items;
@@ -124,12 +123,24 @@ public class ArrayDeque<Item> {
     }
 
     public Item get(int index) {
+        if (index >= size()) {
+            return null;
+        }
         int res = 0;
         res = index + nextFirst;
         if (res > length) {
-            return items[res - length + 1];
+            return items[res - size()];
+        }
+        if(res + 1 == length) {
+            res = -1;
         }
         return items[res + 1];
+
+        /*if (index > length / 2 - 1) {
+            return items[length / 2 - 1 - index];
+        } else {
+            return items[length / 2 - index];
+        }*/
     }
 
     public int size() {
@@ -144,19 +155,27 @@ public class ArrayDeque<Item> {
     }
 
     public void printDeque() {
-        int temp = nextFirst + 1;
-        /*if (nextFirst == length - 1) {
-            temp = 0;
-        } else {
-            temp = nextFirst + 1;
-        }*/
-        while(temp != nextLast - 1) {
-            if (temp == length) {
-                temp = 0;
-            }
-            System.out.print(items[temp]);
+        /*int temp = nextFirst;
+
+        int switchFlag = 0;
+        while(nextFirst > nextLast && temp != length) {
+            System.out.print(items[temp] );
             temp++;
         }
-        System.out.println(items[temp]);
+        if(temp == length) {
+            temp = 0;
+            switchFlag = 1;
+        }
+        while(temp <= nextLast - 2) {
+            if(switchFlag == 0) {
+                temp++;
+                switchFlag = 1;
+            }
+            System.out.print(items[temp]);
+            System.out.print(" ");
+            temp++;
+        }
+        System.out.println(items[temp]);*/
+
     }
 }

@@ -5,6 +5,8 @@ import afu.org.checkerframework.checker.igj.qual.I;
 public class ArrayDeque<Item> {
     private Item[] items;
     private int size;
+    private int nextFirst;
+    private int nextLast;
 
     /**
      * Creates an empty list.
@@ -12,6 +14,8 @@ public class ArrayDeque<Item> {
     public ArrayDeque() {
         items = (Item[]) new Object[8];
         size = 8;
+        nextFirst = 3;
+        nextLast = 4;
     }
 
     /**
@@ -22,49 +26,104 @@ public class ArrayDeque<Item> {
      * For smaller arrays, your usage factor can be arbitrarily low.
      */
 
-    private void resize(int capacity) {
+    private void resizeBig(int capacity) {
         Item[] a = (Item[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, size);
+        System.arraycopy(items, 0, a, size / 2, size);
         items = a;
+        nextFirst = size / 2 - 1;
+        nextLast = size * 3 / 2;
         size = capacity;
     }
 
+    private void resizeSmall(int capacity) {
+        Item[] a = (Item[]) new Object[capacity];
+        System.arraycopy(items, nextFirst + 1, a, (size - (nextLast - nextFirst - 1)) / 2, nextLast - nextFirst - 1);
+        items = a;
+        int newNextFirst = 0;
+        int newNextLast = 0;
+        newNextFirst = (size - (nextLast - nextFirst - 1)) / 2 - 1;
+        newNextLast = (size - (nextLast - nextFirst - 1)) / 2 + (nextLast - nextFirst);
+        nextFirst = newNextFirst;
+        nextLast = newNextLast;
+        size = capacity;
+    }
+
+
+
     public void addFirst(Item x) {
-        if (size == items.length) {
-            resize(4 * size);
+        boolean resizeFlag = false;
+        if (nextFirst == nextLast) {
+            resizeFlag = true;
         }
-        Item[] temp = (Item[]) new Object[size];
-        System.arraycopy(items, 0, temp, 1, size - 1);
-        temp[0] = x;
-        System.arraycopy(temp, 0, items, 0, size);
-        size++;
+        items[nextFirst] = x;
+        if (nextFirst != 0) {
+            nextFirst--;
+        } else {
+            nextFirst = size;
+        }
+        if (resizeFlag) {
+            resizeBig(2 * size);
+        }
     }
 
     public void addLast(Item x) {
-        if (size == items.length) {
-            resize(4 * size);
+        boolean resizeFlag = false;
+        if (nextFirst == nextLast) {
+            resizeFlag = true;
         }
-        items[size] = x;
-        size++;
+        items[nextLast] = x;
+        if (nextLast != size - 1) {
+            nextLast++;
+        } else {
+            nextLast = 0;
+        }
+        if (resizeFlag) {
+            resizeBig(2 * size);
+        }
     }
 
     public void removeFirst() {
-        Item[] temp = (Item[]) new Object[size];
-        System.arraycopy(items, 1, temp, 0, size - 1);
-        System.arraycopy(temp, 0, items, 0, size);
-        if (size >= 4 * items.length) {
-            resize(items.length);
+        if (nextFirst == size) {
+            nextFirst = 0;
+        } else {
+            nextFirst++;
+        }
+        items[nextFirst] = null;
+        if(size >= 16) {
+            if(size > 4 * (nextLast - nextFirst) && nextLast > nextFirst) {
+                resizeSmall(size / 2);
+            }
         }
     }
 
     public void removeLast() {
-        items[size] = null;
-        if (size >= 4 * items.length) {
-            resize(items.length);
+        if (nextLast == 0) {
+            nextFirst = size;
+        } else {
+            nextFirst--;
+        }
+        items[nextLast] = null;
+        if(size >= 16) {
+            if(size > 4 * (nextLast - nextFirst) && nextLast > nextFirst) {
+                resizeSmall(size / 2);
+            }
         }
     }
 
     public Item get(int index) {
-        return items[index];
+        int res = 0;
+        res = index + nextFirst;
+        if (res > size) {
+            return items[res - size + 1];
+        }
+        return items[res + 1];
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 }

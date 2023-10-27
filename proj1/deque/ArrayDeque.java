@@ -27,18 +27,39 @@ public class ArrayDeque<Item> {
      * For smaller arrays, your usage factor can be arbitrarily low.
      */
 
+    private void normalization() {
+        Item[] temp = (Item[]) new Object[length];
+        if(nextFirst > nextLast) {
+            System.arraycopy(items, nextFirst + 1, temp, 1, length - nextFirst - 1);
+            System.arraycopy(items, 0, temp, length - nextFirst, nextLast);
+            nextLast = nextLast + length - nextFirst;
+            nextFirst = 0;
+            items = temp;
+        }
+    }
+
     private void resizeBig(int capacity) {
+        normalization();
         Item[] a = (Item[]) new Object[capacity];
+        /*if(nextFirst > nextLast) {
+            Item[] b = (Item[]) new Object[capacity / 2];
+            System.arraycopy(items, nextFirst + 1, b, 1, length - nextFirst - 1);
+            for(int i = 0; i <);
+        }*/
         System.arraycopy(items, 0, a, length / 2, length);
         items = a;
-        nextFirst = length / 2 - 1;
-        nextLast = length * 3 / 2;
+        nextFirst = length / 2;
+        nextLast = length * 3 / 2 - 1;
         length = capacity;
     }
 
     private void resizeSmall(int capacity) {
         Item[] a = (Item[]) new Object[capacity];
+        if(nextFirst > nextLast) {
+            normalization();
+        }
         System.arraycopy(items, nextFirst + 1, a, (length / 2 - (nextLast - nextFirst - 1)) / 2, size());
+
         items = a;
         int newNextFirst = 0;
         int newNextLast = 0;
@@ -51,9 +72,12 @@ public class ArrayDeque<Item> {
 
 
     public void addFirst(Item x) {
-        boolean resizeFlag = false;
+        /*boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
+        }*/
+        if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+            resizeBig(2 * length);
         }
         items[nextFirst] = x;
         if (nextFirst != 0) {
@@ -61,15 +85,22 @@ public class ArrayDeque<Item> {
         } else {
             nextFirst = length - 1;
         }
-        if (resizeFlag) {
+        /*if (resizeFlag) {
             resizeBig(2 * length);
-        }
+        }*/
+
+
+
+
     }
 
     public void addLast(Item x) {
-        boolean resizeFlag = false;
+        /*boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
+        }*/
+        if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+            resizeBig(2 * length);
         }
         items[nextLast] = x;
         if (nextLast != length - 1) {
@@ -77,9 +108,9 @@ public class ArrayDeque<Item> {
         } else {
             nextLast = 0;
         }
-        if (resizeFlag) {
+        /*if (resizeFlag) {
             resizeBig(2 * length);
-        }
+        }*/
     }
 
     public Item removeFirst() {
@@ -94,8 +125,8 @@ public class ArrayDeque<Item> {
         }
         temp = items[nextFirst];
         items[nextFirst] = null;
-        if(length >= 16) {
-            if(length > 4 * (nextLast - nextFirst) && nextLast > nextFirst) {
+        if (length >= 16) {
+            if (length > 4 * size()) {
                 resizeSmall(length / 2);
             }
         }
@@ -127,20 +158,15 @@ public class ArrayDeque<Item> {
             return null;
         }
         int res = 0;
-        res = index + nextFirst;
-        if (res > length) {
-            return items[res - size()];
-        }
-        if(res + 1 == length) {
-            res = -1;
-        }
-        return items[res + 1];
-
-        /*if (index > length / 2 - 1) {
-            return items[length / 2 - 1 - index];
+        if (nextFirst < nextLast) {
+            res = nextFirst + index + 1;
         } else {
-            return items[length / 2 - index];
-        }*/
+            res = nextFirst + index + 1;
+            if (res >= length) {
+                res = res - length + 1;
+            }
+        }
+        return items[res];
     }
 
     public int size() {

@@ -1,6 +1,6 @@
 package deque;
 
-
+qwdqwfwefwqfwe
 public class LinkedListDeque<Item> {
     public class Node {
         private Item item;

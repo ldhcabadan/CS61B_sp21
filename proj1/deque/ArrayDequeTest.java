@@ -11,14 +11,18 @@ public class ArrayDequeTest {
         //BuggyAList<Integer> broken = new BuggyAList<>();
 
         int N = 50000;
+        int j = 0;
         for (int i = 0; i < N; i += 1) {
-            int operationNumber = StdRandom.uniform(0, 4);
+            int operationNumber = StdRandom.uniform(0, 2);
             if (operationNumber == 0) {
                 // addLast
-                int randVal = StdRandom.uniform(0, 100);
+                //int randVal = StdRandom.uniform(0, 100);
+                int randVal = 0;
+                    randVal = j;
+                    j++;
                 correct.addLast(randVal);
                 System.out.println("addLast" + randVal);
-            } else if (operationNumber == 1 && correct.size() > 0) {
+            } else if (operationNumber == 5 && correct.size() > 0) {
                 // getLast
                 int last = correct.removeLast();
                 System.out.println("removeLast" + last);
@@ -34,8 +38,8 @@ public class ArrayDequeTest {
             } else if (operationNumber == 4 && correct.size() > 0 ) {
                 // size
                 int size = correct.size();
-            } else if (operationNumber == 5 && correct.size() > 0 ) {
-                Integer num = correct.get(0);
+            } else if (operationNumber == 1 && correct.size() > 0 ) {
+                Integer num = correct.get(4);
                 System.out.println(num);
             } else if (operationNumber == 6 && correct.size() > 0 ) {
                 correct.printDeque();

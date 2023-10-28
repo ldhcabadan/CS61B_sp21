@@ -158,6 +158,7 @@ public class ArrayDeque<Item> {
             return null;
         }
         int res = 0;
+        normalization();
         if (nextFirst < nextLast) {
             res = nextFirst + index + 1;
         } else {

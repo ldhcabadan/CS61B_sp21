@@ -49,7 +49,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }*/
         System.arraycopy(items, 0, a, length / 2, length);
         items = a;
-        nextFirst = length / 2;
+        nextFirst = length / 2 - 1;
         nextLast = length * 3 / 2 - 1;
         length = capacity;
     }
@@ -73,21 +73,22 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
 
     public void addFirst(T x) {
+        normalization();
         boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
         }
-        if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+        if (resizeFlag) {
             resizeBig(2 * length);
         }
+        /*if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+            resizeBig(2 * length);
+        }*/
         items[nextFirst] = x;
         if (nextFirst != 0) {
             nextFirst--;
         } else {
             nextFirst = length - 1;
-        }
-        if (resizeFlag) {
-            resizeBig(2 * length);
         }
 
 
@@ -96,21 +97,22 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     public void addLast(T x) {
+        normalization();
         boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
         }
-        if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+        if (resizeFlag) {
             resizeBig(2 * length);
         }
+        /*if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
+            resizeBig(2 * length);
+        }*/
         items[nextLast] = x;
         if (nextLast != length - 1) {
             nextLast++;
         } else {
             nextLast = 0;
-        }
-        if (resizeFlag) {
-            resizeBig(2 * length);
         }
     }
 
@@ -119,6 +121,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
         T temp = null;
+        normalization();
         if (nextFirst == length - 1) {
             nextFirst = 0;
         } else {
@@ -140,6 +143,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
         T temp = null;
+        normalization();
         if (nextLast == 0) {
             nextLast = length - 1;
         } else {
@@ -228,7 +232,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
 
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass() || size() != ((Deque<?>) o).size()) {
+        if (o == null || !(o instanceof Deque) || size() != ((Deque<?>) o).size()) {
             return false;
         }
         int maxSize = Math.min(this.size(), ((Deque<?>) o).size());

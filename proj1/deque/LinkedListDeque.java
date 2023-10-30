@@ -175,7 +175,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T>{
 
 
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass() || size() != ((Deque<?>) o).size()) {
+        if (o == null || !(o instanceof Deque) || size() != ((Deque<?>) o).size()) {
             return false;
         }
         int maxSize = Math.min(this.size(), ((Deque<?>) o).size());

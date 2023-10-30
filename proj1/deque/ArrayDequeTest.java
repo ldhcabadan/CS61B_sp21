@@ -103,4 +103,63 @@ public class ArrayDequeTest {
             }
         }
     }
+
+    @Test
+    public void featuredTest() {
+        ArrayDeque<Integer> MaxArrayDeque = new ArrayDeque<>();
+        LinkedListDeque<Integer> LinkedListDeque1 = new LinkedListDeque<>();
+        MaxArrayDeque.addFirst(0);
+        MaxArrayDeque.addFirst(1);
+        MaxArrayDeque.addFirst(2);
+        MaxArrayDeque.isEmpty();
+        MaxArrayDeque.addFirst(4);
+        MaxArrayDeque.addFirst(5);
+        MaxArrayDeque.addFirst(6);
+        MaxArrayDeque.isEmpty();
+        MaxArrayDeque.addFirst(8);
+        MaxArrayDeque.addFirst(9);
+
+        LinkedListDeque1.addFirst(0);
+        LinkedListDeque1.addFirst(1);
+        LinkedListDeque1.addFirst(2);
+        LinkedListDeque1.isEmpty();
+        LinkedListDeque1.addFirst(4);
+        LinkedListDeque1.addFirst(5);
+        LinkedListDeque1.addFirst(6);
+        LinkedListDeque1.isEmpty();
+        LinkedListDeque1.addFirst(8);
+        LinkedListDeque1.addFirst(9);
+
+        boolean n = MaxArrayDeque.equals(LinkedListDeque1);
+
+        //int n = MaxArrayDeque.removeFirst();
+        int p = 1;
+    }
+
+
+    /**
+     * Test remove when resize.
+
+     */
+    @Test
+    public void featuredTest_2() {
+        ArrayDeque<Integer> MaxArrayDeque = new ArrayDeque<>();
+        MaxArrayDeque.addFirst(0);
+        MaxArrayDeque.addFirst(1);
+        MaxArrayDeque.addFirst(2);
+        MaxArrayDeque.addFirst(4);
+        MaxArrayDeque.addFirst(5);
+        MaxArrayDeque.addFirst(6);
+        MaxArrayDeque.addFirst(7);
+        MaxArrayDeque.addFirst(8);
+        MaxArrayDeque.addFirst(9);
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.removeLast();
+    }
 }

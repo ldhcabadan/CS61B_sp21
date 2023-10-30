@@ -1,19 +1,20 @@
 package deque;
 
 
-public class ArrayDeque<Item> {
-    private Item[] items;
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
+    private T[] items;
     private int length;
     // length is the maximum length of the array.(Initially, 8)
     // instead, the size function is the actual size of the array. (Initially, 0)
     private int nextFirst;
     private int nextLast;
-
     /**
      * Creates an empty list.
      */
     public ArrayDeque() {
-        items = (Item[]) new Object[8];
+        items = (T[]) new Object[8];
         length = 8;
         nextFirst = 3;
         nextLast = 4;
@@ -28,7 +29,7 @@ public class ArrayDeque<Item> {
      */
 
     private void normalization() {
-        Item[] temp = (Item[]) new Object[length];
+        T[] temp = (T[]) new Object[length];
         if(nextFirst > nextLast) {
             System.arraycopy(items, nextFirst + 1, temp, 1, length - nextFirst - 1);
             System.arraycopy(items, 0, temp, length - nextFirst, nextLast);
@@ -40,7 +41,7 @@ public class ArrayDeque<Item> {
 
     private void resizeBig(int capacity) {
         normalization();
-        Item[] a = (Item[]) new Object[capacity];
+        T[] a = (T[]) new Object[capacity];
         /*if(nextFirst > nextLast) {
             Item[] b = (Item[]) new Object[capacity / 2];
             System.arraycopy(items, nextFirst + 1, b, 1, length - nextFirst - 1);
@@ -54,7 +55,7 @@ public class ArrayDeque<Item> {
     }
 
     private void resizeSmall(int capacity) {
-        Item[] a = (Item[]) new Object[capacity];
+        T[] a = (T[]) new Object[capacity];
         if(nextFirst > nextLast) {
             normalization();
         }
@@ -71,7 +72,7 @@ public class ArrayDeque<Item> {
     }
 
 
-    public void addFirst(Item x) {
+    public void addFirst(T x) {
         /*boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
@@ -94,7 +95,7 @@ public class ArrayDeque<Item> {
 
     }
 
-    public void addLast(Item x) {
+    public void addLast(T x) {
         /*boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
@@ -113,11 +114,11 @@ public class ArrayDeque<Item> {
         }*/
     }
 
-    public Item removeFirst() {
+    public T removeFirst() {
         if(size() <= 0) {
             return null;
         }
-        Item temp = null;
+        T temp = null;
         if (nextFirst == length - 1) {
             nextFirst = 0;
         } else {
@@ -133,11 +134,11 @@ public class ArrayDeque<Item> {
         return temp;
     }
 
-    public Item removeLast() {
+    public T removeLast() {
         if(size() <= 0) {
             return null;
         }
-        Item temp = null;
+        T temp = null;
         if (nextLast == 0) {
             nextLast = length - 1;
         } else {
@@ -153,7 +154,7 @@ public class ArrayDeque<Item> {
         return temp;
     }
 
-    public Item get(int index) {
+    public T get(int index) {
         if (index >= size()) {
             return null;
         }
@@ -177,32 +178,64 @@ public class ArrayDeque<Item> {
         return nextLast - nextFirst - 1;
     }
 
-    public boolean isEmpty() {
+    /*public boolean isEmpty() {
         return size() == 0;
-    }
+    }*/
 
     public void printDeque() {
-        /*int temp = nextFirst;
-
-        int switchFlag = 0;
-        while(nextFirst > nextLast && temp != length) {
-            System.out.print(items[temp] );
-            temp++;
+        normalization();
+        int first;
+        int last;
+        first = nextFirst + 1;
+        last = nextLast - 1;
+        if(first >= length) {
+            first = first - length;
         }
-        if(temp == length) {
-            temp = 0;
-            switchFlag = 1;
+        while (first < last) {
+            System.out.print(items[first] + " ");
+            first++;
         }
-        while(temp <= nextLast - 2) {
-            if(switchFlag == 0) {
-                temp++;
-                switchFlag = 1;
-            }
-            System.out.print(items[temp]);
-            System.out.print(" ");
-            temp++;
-        }
-        System.out.println(items[temp]);*/
-
+        System.out.println(items[first]);
     }
+
+
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int wizPos;
+
+        public ArrayDequeIterator() {
+            normalization();
+            wizPos = nextFirst + 1;
+        }
+
+        public boolean hasNext() {
+            return wizPos < nextLast;
+        }
+
+        public T next() {
+            T item = items[wizPos];
+            wizPos++;
+            return item;
+        }
+    }
+
+
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        int maxSize = Math.min(this.size(), ((Deque<?>) o).size());
+        for(int i = 0; i < maxSize; i++) {
+            if (!this.get(i).equals(((Deque<?>) o).get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
 }

@@ -1,6 +1,7 @@
 package deque;
 
 import edu.princeton.cs.algs4.StdRandom;
+import net.sf.saxon.om.Item;
 import org.junit.Test;
 
 public class ArrayDequeTest {
@@ -13,7 +14,7 @@ public class ArrayDequeTest {
         int N = 50000;
         int j = 0;
         for (int i = 0; i < N; i += 1) {
-            int operationNumber = StdRandom.uniform(0, 2);
+            int operationNumber = StdRandom.uniform(0, 7);
             if (operationNumber == 0) {
                 // addLast
                 //int randVal = StdRandom.uniform(0, 100);
@@ -37,12 +38,16 @@ public class ArrayDequeTest {
                 System.out.println("removeFirst" + first);
             } else if (operationNumber == 4 && correct.size() > 0 ) {
                 // size
-                int size = correct.size();
+                correct.printDeque();
             } else if (operationNumber == 1 && correct.size() > 0 ) {
                 Integer num = correct.get(4);
                 System.out.println(num);
             } else if (operationNumber == 6 && correct.size() > 0 ) {
                 correct.printDeque();
+            } else if (operationNumber == 7) {
+                for(Integer item : correct) {
+                    System.out.println(item);
+                }
             }
         }
     }

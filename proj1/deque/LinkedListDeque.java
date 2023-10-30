@@ -2,10 +2,9 @@ package deque;
 
 
 import java.util.Iterator;
-import java.util.Objects;
 
 public class LinkedListDeque<T> implements Iterable<T>, Deque<T>{
-    public class Node {
+    private class Node {
         private T item;
         private Node prev;
         private Node next;
@@ -33,12 +32,12 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T>{
     /**
      * Creates a Deque with an initial node.
      */
-    public LinkedListDeque(T x) {
+    /*public LinkedListDeque(T x) {
         sentinel = new Node(null, null, null);
         sentinel.next = new Node(x, sentinel, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
-    }
+    }*/
 
     /**
      * Adds an item of type T to the front of the deque.
@@ -176,9 +175,11 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T>{
 
 
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass() || size() != ((Deque<?>) o).size()) {
+            return false;
+        }
         int maxSize = Math.min(this.size(), ((Deque<?>) o).size());
-        for(int i = 0; i < maxSize; i++) {
+        for (int i = 0; i < maxSize; i++) {
             if (!this.get(i).equals(((Deque<?>) o).get(i))) {
                 return false;
             }

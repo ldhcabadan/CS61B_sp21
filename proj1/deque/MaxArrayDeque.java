@@ -8,10 +8,10 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
     /**
      * Creates a MaxArrayDeque without a given Comparator.
      */
-    public MaxArrayDeque() {
+    /*public MaxArrayDeque() {
         super();
         this.myComparator = new itemComparator<T>();
-    }
+    }*/
 
     /**
      * Creates a MaxArrayDeque with the given Comparator.

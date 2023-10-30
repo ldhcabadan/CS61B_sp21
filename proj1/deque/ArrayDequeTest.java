@@ -79,4 +79,28 @@ public class ArrayDequeTest {
             int blablabla = 0;
         }
     }
+
+    // Test the get().
+    @Test
+    public void RandomizedTest_3() {
+
+        ArrayDeque<Integer> correct = new ArrayDeque<>();
+        //BuggyAList<Integer> broken = new BuggyAList<>();
+
+        int N = 50000;
+        int j = 0;
+        for (int i = 0; i < N; i += 1) {
+            int operationNumber = StdRandom.uniform(0, 3);
+            if (operationNumber == 0) {
+                int randVal = StdRandom.uniform(0, 100);
+                correct.addLast(randVal);
+                System.out.println("addLast " + randVal);
+            } else if (operationNumber == 2) {
+                // addLast
+                int randVal = StdRandom.uniform(0, 10);
+                Integer ret = correct.get(randVal);
+                System.out.println("get " + ret);
+            }
+        }
+    }
 }

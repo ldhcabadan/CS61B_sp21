@@ -30,10 +30,14 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     private void normalization() {
         T[] temp = (T[]) new Object[length];
-        if (nextFirst > nextLast) {
+        if (nextFirst >= nextLast) {
             System.arraycopy(items, nextFirst + 1, temp, 1, length - nextFirst - 1);
             System.arraycopy(items, 0, temp, length - nextFirst, nextLast);
-            nextLast = nextLast + length - nextFirst;
+            if (nextFirst == nextLast) {
+                nextLast = 0;
+            } else {
+                nextLast = nextLast + length - nextFirst;
+            }
             nextFirst = 0;
             items = temp;
         }
@@ -49,8 +53,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }*/
         System.arraycopy(items, 0, a, length / 2, length);
         items = a;
-        nextFirst = length / 2 - 1;
-        nextLast = length * 3 / 2 - 1;
+        nextFirst = length / 2;
+        nextLast = length * 3 / 2;
         length = capacity;
     }
 
@@ -59,7 +63,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (nextFirst > nextLast) {
             normalization();
         }
-        System.arraycopy(items, nextFirst + 1, a, (length / 2 - (nextLast - nextFirst - 1)) / 2, size());
+        System.arraycopy(items, nextFirst + 1, a,
+                (length / 2 - (nextLast - nextFirst - 1)) / 2, size());
 
         items = a;
         int newNextFirst = 0;
@@ -129,8 +134,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
         temp = items[nextFirst];
         items[nextFirst] = null;
-        int least_length = 16;
-        if (length >= least_length) {
+        final int leastLength = 16;
+        if (length >= leastLength) {
             if (length > 4 * size()) {
                 resizeSmall(length / 2);
             }
@@ -151,8 +156,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
         temp = items[nextLast];
         items[nextLast] = null;
-        int least_length = 16;
-        if (length >= least_length) {
+        final int leastLength = 16;
+        if (length >= leastLength) {
             if (length > 4 * (nextLast - nextFirst) && nextLast > nextFirst) {
                 resizeSmall(length / 2);
             }

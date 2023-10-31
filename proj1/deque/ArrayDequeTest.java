@@ -162,4 +162,59 @@ public class ArrayDequeTest {
         MaxArrayDeque.removeLast();
         MaxArrayDeque.removeLast();
     }
+
+    @Test
+    public void featuredTest_3() {
+        ArrayDeque<Integer> ArrayDeque = new ArrayDeque<>();
+        ArrayDeque.addLast(0);
+        ArrayDeque.removeLast(); //      ==> 0
+        ArrayDeque.addFirst(2);
+        ArrayDeque.removeFirst(); //     ==> 2
+        ArrayDeque.addLast(4);
+        ArrayDeque.addLast(5);
+        ArrayDeque.get(0); //      ==> 4
+        ArrayDeque.addLast(7);
+        ArrayDeque.get(2); // 7
+        ArrayDeque.addLast(9);
+        ArrayDeque.addFirst(10);
+        ArrayDeque.addLast(11);
+        ArrayDeque.removeLast(); // 11
+        ArrayDeque.addLast(13);
+        ArrayDeque.addLast(14);
+        ArrayDeque.addFirst(15);
+        ArrayDeque.addFirst(16);
+        ArrayDeque.addFirst(17);
+        ArrayDeque.addFirst(18);
+        ArrayDeque.addFirst(19);
+        ArrayDeque.get(8); //     ==> 5
+    }
+
+
+
+    @Test
+    public void featuredTest_4() {
+        ArrayDeque<Integer> MaxArrayDeque = new ArrayDeque<>();
+        MaxArrayDeque.addLast(0);
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.addFirst(2);
+        MaxArrayDeque.removeFirst();
+        MaxArrayDeque.addFirst(4);
+        MaxArrayDeque.get(0);
+        MaxArrayDeque.addFirst(6);
+        MaxArrayDeque.addLast(7);
+        MaxArrayDeque.addLast(8);
+        MaxArrayDeque.addLast(9);
+        MaxArrayDeque.get(1);
+        MaxArrayDeque.get(2);
+        MaxArrayDeque.addLast(12);
+        MaxArrayDeque.get(3);
+        MaxArrayDeque.get(4);
+        MaxArrayDeque.addLast(15);
+        MaxArrayDeque.get(0);
+        MaxArrayDeque.addLast(17);
+        MaxArrayDeque.removeLast();
+        MaxArrayDeque.addLast(19);
+        MaxArrayDeque.removeFirst(); // 6
+    }
+
 }

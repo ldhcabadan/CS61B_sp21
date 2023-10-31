@@ -30,8 +30,8 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
             return null;
         }
         T res = this.get(0);
-        Comparator<T> defaultItemComparator = new itemComparator();
-        for(T item : this) {
+        Comparator<T> defaultItemComparator = new ItemComparator();
+        for (T item : this) {
             if (defaultItemComparator.compare(item, res) > 0) {
                 res = item;
             }
@@ -51,7 +51,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
             return null;
         }
         T res = this.get(0);
-        for(T item : this) {
+        for (T item : this) {
             if (c.compare(item, res) > 0) {
                 res = item;
             }
@@ -62,7 +62,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
 
 
 
-    public static class itemComparator<T> implements Comparator<T>{
+    public static class ItemComparator<T> implements Comparator<T> {
         public int compare(T o1, T o2) {
             if (o1 instanceof Comparable && o2 instanceof Comparable) {
                 Comparable<T> comparable1 = (Comparable<T>) o1;

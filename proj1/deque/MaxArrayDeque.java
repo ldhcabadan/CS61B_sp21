@@ -64,14 +64,14 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
 
     public static class ItemComparator<T> implements Comparator<T> {
         public int compare(T o1, T o2) {
-            if (o1 instanceof Comparable && o2 instanceof Comparable) {
+            //if (o1 instanceof Comparable && o2 instanceof Comparable) {
                 Comparable<T> comparable1 = (Comparable<T>) o1;
                 Comparable<T> comparable2 = (Comparable<T>) o2;
                 return comparable1.compareTo((T) comparable2);
-            } else {
+            //} else {
                 // 处理不可比较的情况
-                throw new IllegalArgumentException("o1 and o2 must be comparable");
-            }
+            //    throw new IllegalArgumentException("o1 and o2 must be comparable");
+            //}
         }
     }
 }

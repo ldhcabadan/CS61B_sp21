@@ -156,7 +156,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         private int wizPos;
         private Node node;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             wizPos = 0;
             node = sentinel;
         }

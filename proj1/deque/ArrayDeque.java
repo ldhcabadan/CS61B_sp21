@@ -60,9 +60,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     private void resizeSmall(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        if (nextFirst > nextLast) {
-            normalization();
-        }
+        normalization();
         System.arraycopy(items, nextFirst + 1, a,
                 (length / 2 - (nextLast - nextFirst - 1)) / 2, size());
 
@@ -78,7 +76,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
 
     public void addFirst(T x) {
-        normalization();
+        //normalization();
         boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
@@ -86,23 +84,16 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (resizeFlag) {
             resizeBig(2 * length);
         }
-        /*if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
-            resizeBig(2 * length);
-        }*/
         items[nextFirst] = x;
         if (nextFirst != 0) {
             nextFirst--;
         } else {
             nextFirst = length - 1;
         }
-
-
-
-
     }
 
     public void addLast(T x) {
-        normalization();
+        //normalization();
         boolean resizeFlag = false;
         if (nextFirst == nextLast) {
             resizeFlag = true;
@@ -110,9 +101,6 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (resizeFlag) {
             resizeBig(2 * length);
         }
-        /*if (Math.abs(nextFirst - nextLast) <= 1 && nextFirst > nextLast) {
-            resizeBig(2 * length);
-        }*/
         items[nextLast] = x;
         if (nextLast != length - 1) {
             nextLast++;
@@ -219,7 +207,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private class ArrayDequeIterator implements Iterator<T> {
         private int wizPos;
 
-        public ArrayDequeIterator() {
+        ArrayDequeIterator() {
             normalization();
             wizPos = nextFirst + 1;
         }

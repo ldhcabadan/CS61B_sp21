@@ -26,17 +26,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
      * If the MaxArrayDeque is empty, simply return null.
      */
     public T max() {
-        if (this.isEmpty()) {
-            return null;
-        }
-        T res = this.get(0);
-        Comparator<T> defaultItemComparator = new ItemComparator();
-        for (T item : this) {
-            if (defaultItemComparator.compare(item, res) > 0) {
-                res = item;
-            }
-        }
-        return res;
+        return max(myComparator);
     }
 
     /**
@@ -57,23 +47,29 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
             }
         }
         return res;
-
     }
 
 
-
-    public static class ItemComparator<T> implements Comparator<T> {
-        public int compare(T o1, T o2) {
-            //if (o1 instanceof Comparable && o2 instanceof Comparable) {
-                Comparable<T> comparable1 = (Comparable<T>) o1;
-                Comparable<T> comparable2 = (Comparable<T>) o2;
-                return comparable1.compareTo((T) comparable2);
-            //} else {
-                // 处理不可比较的情况
-            //    throw new IllegalArgumentException("o1 and o2 must be comparable");
-            //}
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
         }
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MaxArrayDeque)) {
+            return false;
+        }
+        if (((MaxArrayDeque<?>) o).max() != max()) {
+            return false;
+        }
+        return super.equals(o);
     }
+
+
+
+
 }
 
 

@@ -114,7 +114,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
         T temp = null;
-        normalization();
+        //normalization();
         if (nextFirst == length - 1) {
             nextFirst = 0;
         } else {
@@ -136,7 +136,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
         T temp = null;
-        normalization();
+        //normalization();
         if (nextLast == 0) {
             nextLast = length - 1;
         } else {

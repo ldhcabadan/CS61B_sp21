@@ -27,6 +27,30 @@ public class Timing {
         printTable(String.format("%s addFirst", deque.getClass()), Ns, times, opCounts);
     }
 
+    public static void addFirstRemoveLast(Deque<Integer> deque) {
+        ArrayDeque<Integer> Ns = new ArrayDeque<>();
+        ArrayDeque<Double> times = new ArrayDeque<>();
+        ArrayDeque<Integer> opCounts = new ArrayDeque<>();
+        int dequeLength = 1000;
+        for (int p = 0; p < 8; p++) {
+            if (p > 0) {
+                dequeLength *= 2;
+            }
+            Ns.addLast(dequeLength);
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < dequeLength; i++) {
+                deque.addFirst(1);
+            }
+            for (int i = 0; i < dequeLength; i++) {
+                deque.removeLast();
+            }
+            double timeInSeconds = sw.elapsedTime();
+            times.addLast(timeInSeconds);
+            opCounts.addLast(dequeLength);
+        }
+        printTable(String.format("%s addFirst", deque.getClass()), Ns, times, opCounts);
+    }
+
     private static void printTable(String opName, ArrayDeque<Integer> Ns, ArrayDeque<Double> times, ArrayDeque<Integer> opCounts) {
         System.out.println(opName + "\n");
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");

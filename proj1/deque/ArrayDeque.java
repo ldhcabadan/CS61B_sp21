@@ -171,7 +171,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     public int size() {
-        normalization();
+        //normalization();
         if (nextFirst >= nextLast) {
             return length - (nextFirst - nextLast) - 1;
         }

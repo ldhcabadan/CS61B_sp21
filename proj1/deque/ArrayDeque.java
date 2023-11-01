@@ -124,7 +124,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         items[nextFirst] = null;
         final int leastLength = 16;
         if (length >= leastLength) {
-            if (length > (int)(3 * (double)size())) {
+            if (length > (3 * size())) {
                 resizeSmall(length / 2);
             }
         }
@@ -146,7 +146,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         items[nextLast] = null;
         final int leastLength = 16;
         if (length >= leastLength) {
-            if (length > (int)(3 * (double)size())) {
+            if (length > (3 * size())) {
                 resizeSmall(length / 2);
             }
         }

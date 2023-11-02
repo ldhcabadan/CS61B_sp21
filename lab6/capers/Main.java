@@ -1,6 +1,7 @@
 package capers;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static capers.Utils.*;
 
@@ -43,6 +44,9 @@ public class Main {
 
         CapersRepository.setupPersistence();
         String text;
+        String name;
+        String breed;
+        int age;
         switch (args[0]) {
         case "story":
             /* This call has been handled for you. The rest will be similar. */
@@ -52,10 +56,16 @@ public class Main {
             break;
         case "dog":
             validateNumArgs("dog", args, 4);
+            name = args[1];
+            breed = args[2];
+            age = Integer.parseInt(args[3]);
+            CapersRepository.makeDog(name, breed, age);
             // TODO: make a dog
             break;
         case "birthday":
             validateNumArgs("birthday", args, 2);
+            name = args[1];
+            CapersRepository.celebrateBirthday(name);
             // TODO: celebrate this dog's birthday
             break;
         default:
